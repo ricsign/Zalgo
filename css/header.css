@@ -1,0 +1,25 @@
+.navbar{
+
+  background-color: #303841 !important;
+}
+
+.navbar-brand{
+  color: #fcf8f3 !important;
+  font-size: 200%;
+  font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+  font-weight: bolder;
+}
+
+.nav-item{
+  margin: 0 0 0 32px;
+}
+
+.nav-link{
+  color: #fcf8f3 !important;
+  display: inline-block;
+
+}
+
+.nav-link:hover{
+  color: #eae7d9 !important;
+}
