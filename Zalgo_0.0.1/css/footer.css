@@ -1,0 +1,11 @@
+.page-footer{
+  margin-top: 7%;
+  background-color: #303841;
+  width: 100%;
+  color:#fcf8f3 !important;
+}
+
+.page-footer p:hover,.page-footer h5:hover{
+  color: #d2c6b2 !important;
+  cursor: default;
+}

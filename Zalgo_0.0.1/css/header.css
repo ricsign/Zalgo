@@ -1,6 +1,7 @@
 .navbar{
-
   background-color: #303841 !important;
+  width: 100%;
+  margin: 0 0 5% 0;
 }
 
 .navbar-brand{
@@ -21,5 +22,5 @@
 }
 
 .nav-link:hover{
-  color: #eae7d9 !important;
+  color: #d2c6b2 !important;
 }

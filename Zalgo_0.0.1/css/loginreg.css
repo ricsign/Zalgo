@@ -1,0 +1,54 @@
+body{
+
+  background-image: url('../img/login.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.form-container{
+  background-color: grey;
+  width: 39em;
+  margin: 0 auto;
+  padding: 5%;
+  border-radius: 2%;
+}
+.form-container label{
+  color: white;
+}
+
+.login-form{
+  margin: 0 auto;
+}
+
+.auth{
+  width: 20%;
+}
+
+.submit{
+  margin-top: 10%;
+}
+
+.register-tag{
+  text-decoration: none;
+  color: white;
+  display: inline-block;
+  margin-top: 3%;
+}
+
+.register-tag:hover{
+  color: #d2c6b2;
+  display: inline-block;
+  margin-top: 3%;
+}
+
+#code_pic{
+  margin-left: 9%;
+  border-width: 5px;
+  border-color: white;
+  border-style: ridge;
+  border-radius: 20%;
+}
+
+#code_refresh{
+  margin-left: 2%;
+}

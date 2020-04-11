@@ -18,7 +18,7 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav mt-2 mt-lg-0">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="index.php">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Learn</a>
@@ -26,15 +26,27 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Problems</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Setting</a>
-        </li>
+
       </ul>
       <ul class="navbar-nav ml-auto">
+        <?php
+          if(!isset($COOKIE["loguser"])){
+        ?>
         <li class="nav-item">
-          <a class="nav-link" href="#">Log In</a>
+          <a class="nav-link" href="login.php">Log In</a>
         </li>
+        <?php
+          }
+          else{
+        ?>
         <li class="nav-item">
+          <a class="nav-link" href="login.php">My Account</a>
+        </li>
+        <?php
+          }
+        ?>
+        <li class="nav-item">
+
           <a class="nav-link" href="#">About</a>
         </li>
       </ul>
