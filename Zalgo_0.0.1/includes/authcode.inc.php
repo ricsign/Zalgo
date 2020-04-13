@@ -21,7 +21,7 @@
   // Random generate n-digits code
   function generate_code($length){
     // all options for auth code
-    $option = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $option = "ABC1DEFG5H0IJ4KL8MNOP9QRS2T6UV7WXY3Z";
     $option_list = str_split($option);
 
     // randomly select code from option list
@@ -46,8 +46,8 @@
     //fill background
     imagefill($img,0,0,$bg_color);
 
-    //random draw 7 lines (distractions)
-    for($i=0; $i<7; $i++){
+    //random draw 10 lines (distractions)
+    for($i=0; $i<10; $i++){
       //generate random colors for lines
       $rand_color = imagecolorallocate($img,mt_rand(100,230),mt_rand(100,230),mt_rand(100,230));
       //random position

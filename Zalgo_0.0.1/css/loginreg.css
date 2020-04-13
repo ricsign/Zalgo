@@ -1,8 +1,8 @@
 body{
-
   background-image: url('../img/login.jpeg');
   background-repeat: no-repeat;
   background-size: cover;
+  position: static;
 }
 
 .form-container{
