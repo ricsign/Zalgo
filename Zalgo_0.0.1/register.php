@@ -11,9 +11,11 @@
   <body>
     <?php
       # Prevent illegal operations
-      define("ACC_CODE",True);
+      define("ACC_CODE",true);
+      define("DB_ACC",true);
       require_once "header.php";
       require_once "common/common.php";
+      require_once "includes/conn.inc.php";
 
       // store user info
       $data = array();
@@ -31,47 +33,88 @@
             _url_back("register.php","Unauthorized operations!");
             exit();
           }
-
           // clean auth code cache
           if(isset($_SESSION["auth_code"])){
             unset($_SESSION["auth_code"]);
           }
+          // check uniqid
+          if(!isset($_POST['uniqid'])){
+              _url_back("register.php","Unauthorized operations!");
+              exit();
+          }
+          if(!($_POST['uniqid'] == $_SESSION['uniqid'])){
+            _url_back("register.php","Unauthorized operations!");
+            exit();
+          }
+          $data['uniqid'] = $_SESSION['uniqid'];
+          // clean uniqid cache
+          if(isset($_SESSION['uniqid'])){
+            unset($_SESSION['uniqid']);
+          }
           // receive Username
           if (isset($_POST['username'])){
             $data['username'] = _username_clean("register.php",$_POST['username'],20,2);
+            // check if username has been taken
+            if(!ret_query($conn,"select username from user_info where username = '".$data['username']."';") == null){
+              _url_back("register.php","Sorry, this username has been taken!");
+              exit();
+            }
+          }else{
+            _url_back("register.php","You must fill username!");
+            exit();
           }
           // receive gender
           if (isset($_POST['gender'])){
             $data['gender'] = _gender_clean($_POST['gender']);
+          }else{
+            _url_back("register.php","Please select a gender option!");
+            exit();
           }
           // receive Password
-          if (isset($_POST['password'])){
+          if (isset($_POST['password']) && isset($_POST['repassword'])){
             $data['password'] = _password_clean("register.php",$_POST['password'],$_POST['repassword'],30,3);
+          }else{
+            _url_back("register.php","Please fill password!");
+            exit();
           }
           // receive Email
           if (isset($_POST['email'])){
-            if($_POST['email'] != ""|| $_POST['email'] != null){
+            if($_POST['email'] != "" || $_POST['email'] != null){
               $data['email'] = _email_clean("register.php",$_POST['email'],30,4);
             }
             else{
               $data['email'] = "";
             }
           }
-
-
-          print_r($data);
+          // write in database
+          $reg_query = "insert into user_info
+          (username, uniqid, gender, email, reg_time, last_login_time, last_login_ip, password)
+          values ('{$data['username']}', '{$data['uniqid']}', '{$data['gender']}', '{$data['email']}',
+          now(), now(), '{$_SERVER['REMOTE_ADDR']}', '{$data['password']}');";
+          if(void_query($conn,$reg_query)){
+            _url_back("login.php","Success!");
+          }
+          else{
+            echo "Try again!";
+          };
         }
+      }
+      else{
+        // generate unique id to prevent xss
+        session_start();
+        $_SESSION['uniqid'] = $uniqid = sha1(uniqid(rand(),true));
       }
     ?>
     <div class="form-container">
       <form class="login-form" action="register.php?action=reg" method="post">
         <div class="login-box">
           <div class="form-group">
-            <label>Username (*): </label>
+            <input type="hidden" name="uniqid" value="<?php echo $uniqid;?>"></input>
+            <label>Username(*): </label>
             <input type="text" name = "username" class="form-control"></input>
           </div>
           <div class="form-group form-check form-check-inline">
-            <label class="form-check-label">Gender(*):</label> &nbsp&nbsp&nbsp
+            <label class="form-check-label">Gender(*):</label> &nbsp&nbsp&nbsp&nbsp&nbsp
             <br/>
             <input class="form-check-input" type="radio" name="gender" value="male"> <label class="form-check-label">Male</label>&nbsp&nbsp&nbsp
             <input class="form-check-input" type="radio" name="gender" value="female">  <label class="form-check-label">Female</label>&nbsp&nbsp&nbsp

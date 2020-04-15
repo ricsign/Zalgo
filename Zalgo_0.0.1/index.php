@@ -10,8 +10,9 @@
   <body>
     <?php
       # Prevent illegal operations
+      define('ROOT_DIR',$_SERVER['DOCUMENT_ROOT']."/Projects/Zalgo/Zalgo_0.0.1/");
       define("ACC_CODE",True);
-      require_once "header.php";
+      require_once ROOT_DIR."header.php";
     ?>
 
     <div class="main">

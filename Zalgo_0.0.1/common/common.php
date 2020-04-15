@@ -39,7 +39,6 @@
     return $string;
   }
 
-
   function _gender_clean($value){
     if ($value == "male"){
       return 0;
