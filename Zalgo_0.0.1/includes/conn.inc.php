@@ -37,7 +37,7 @@ function void_query($conn,$sql){
 }
 
 
-// query with return
+// query with 1 return
 function ret_query($conn,$sql){
   $result = $conn->query($sql);
   if($result == false){
@@ -51,6 +51,26 @@ function ret_query($conn,$sql){
     else{
       return null;
     }
+  }
+
+}
+
+// query with multiple return
+function multi_ret_query($conn,$sql){
+  $result = $conn->query($sql);
+  if($result == false){
+    echo "Server Error";
+  }
+  else{
+    //if it has data set
+    if ($result->num_rows > 0){
+      return $result->fetch_all();
+    }
+    // else return null
+    else{
+      return null;
+    }
+
   }
 
 }

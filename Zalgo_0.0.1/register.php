@@ -16,13 +16,19 @@
       require_once "header.php";
       require_once "common/common.php";
       require_once "includes/conn.inc.php";
-
       // store user info
       $data = array();
       // if we receive post data, process it
       if (isset($_GET['action'])){
         session_start();
         if ($_GET['action'] == "reg"){
+          // check if this device registered more than 5 accounts
+          $reg_sql = "select username FROM user_info WHERE reg_ip = '{$_SERVER['REMOTE_ADDR']}';";
+          if(count(multi_ret_query($conn,$reg_sql)) >= 5){
+            _url_back("register.php","You have already registered the maximum number of accounts!");
+            exit();
+          }
+
           // check auth code
           if(isset($_POST['authcode'])){
             if (!($_POST['authcode'] == $_SESSION['auth_code'])){
@@ -60,7 +66,7 @@
               exit();
             }
           }else{
-            _url_back("register.php","You must fill username!");
+            _url_back("register.php","Please fill username!");
             exit();
           }
           // receive gender
@@ -86,17 +92,19 @@
               $data['email'] = "";
             }
           }
+
           // write in database
           $reg_query = "insert into user_info
-          (username, uniqid, gender, email, reg_time, last_login_time, last_login_ip, password)
-          values ('{$data['username']}', '{$data['uniqid']}', '{$data['gender']}', '{$data['email']}',
-          now(), now(), '{$_SERVER['REMOTE_ADDR']}', '{$data['password']}');";
+          (username, uniqid, gender, email, reg_time, last_login_time, reg_ip, last_login_ip, password)
+          values ('{$data['username']}','{$data['uniqid']}','{$data['gender']}','{$data['email']}',
+          now(),now(),'{$_SERVER['REMOTE_ADDR']}','{$_SERVER['REMOTE_ADDR']}','{$data['password']}');";
           if(void_query($conn,$reg_query)){
             _url_back("login.php","Success!");
           }
           else{
-            echo "Try again!";
+            _url_back("index.php","There is an error occured!");
           };
+
         }
       }
       else{
@@ -106,7 +114,7 @@
       }
     ?>
     <div class="form-container">
-      <form class="login-form" action="register.php?action=reg" method="post">
+      <form class="register-form" action="register.php?action=reg" method="post">
         <div class="login-box">
           <div class="form-group">
             <input type="hidden" name="uniqid" value="<?php echo $uniqid;?>"></input>
@@ -150,4 +158,5 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   <script src="js/loginreg.js" type="text/javascript"></script>
+  <script src="js/register.js" type="text/javascript"></script>
 </html>

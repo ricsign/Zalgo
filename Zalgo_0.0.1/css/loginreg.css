@@ -16,7 +16,7 @@ body{
   color: white;
 }
 
-.login-form{
+.login-form,.register-form{
   margin: 0 auto;
 }
 
