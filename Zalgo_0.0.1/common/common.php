@@ -35,7 +35,7 @@
       _url_back($ret_url,"Username may conatin sensitive characters, please try again!");
       exit();
     }
-    // return mysql_real_escape_string($string);
+     // return mysql_real_escape_string($string);
     return $string;
   }
 
@@ -56,9 +56,10 @@
 
 
   function _password_clean($ret_url,$password,$repassword,$max_length,$min_length){
-    // trim blanks from both side
-    $password = trim($password);
-    $repassword = trim($repassword);
+    // no blanks allowed
+    if(strpos($password," ")){
+      _url_back($ret_url,"The password may not contain any blanks!");
+    }
     //check length
     if(mb_strlen($password,'utf-8') < $min_length || mb_strlen($password,'utf-8') > $max_length){
       _url_back($ret_url,"Password is too long or too short!");
@@ -69,6 +70,20 @@
       _url_back($ret_url,"Your passwords are different!");
     }
     return password_hash($password, PASSWORD_DEFAULT);
+  }
+
+
+  function _login_password_clean($ret_url,$password,$max_length,$min_length){
+    // no blanks allowed
+    if(strpos($password," ")){
+      _url_back($ret_url,"The password may not contain any blanks!");
+    }
+    //check length
+    if(mb_strlen($password,'utf-8') < $min_length || mb_strlen($password,'utf-8') > $max_length){
+      _url_back($ret_url,"Password is too long or too short!");
+      exit();
+    }
+    return $password;
   }
 
 
@@ -94,4 +109,13 @@
     return $email;
   }
 
+  function _rememberme_clean($remeber_me){
+    // no blanks allowed
+    if($remeber_me == 1){
+      return 1;
+    }
+    else {
+      return 0;
+    }
+}
  ?>

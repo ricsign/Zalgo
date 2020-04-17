@@ -6,6 +6,9 @@
       _back();
       exit();
     }
+    if (!defined("COOKIE_SALT_VAL")){
+      define("COOKIE_SALT_VAL","O#ur42WBe@S3)2i|tES2*&eCu#r@iTy3/2IsoK9.32Y8e3s");
+    }
    ?>
   <link rel="stylesheet" href="css/header.css">
 
@@ -30,17 +33,26 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <?php
-          if(!isset($COOKIE["loguser"])){
+          if(isset($_COOKIE["username"]) && isset($_COOKIE["userkey"])){
+            if($_COOKIE["userkey"] == sha1(sha1(COOKIE_SALT_VAL.$_COOKIE['username'].COOKIE_SALT_VAL))){
         ?>
+        <li class="nav-item">
+          <a class="nav-link" href="myaccount.php">My Account</a>
+        </li>
+        <?php
+            }
+            else{
+          ?>
         <li class="nav-item">
           <a class="nav-link" href="login.php">Log In</a>
         </li>
-        <?php
+          <?php
+            }
           }
           else{
         ?>
         <li class="nav-item">
-          <a class="nav-link" href="login.php">My Account</a>
+          <a class="nav-link" href="login.php">Log In</a>
         </li>
         <?php
           }
